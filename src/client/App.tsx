@@ -35,10 +35,10 @@ const STAGE_NUM: Record<FixtureStage, string> = {
 const UK_TZ = "Europe/London";
 const UK_LOCALE = "en-GB";
 
-// Configurable at build time via VITE_GROUP_NAME (e.g. "Family").
+// Configurable at build time via VITE_GROUP_NAME (e.g. "Group").
 const RAW_GROUP_NAME =
   (import.meta.env.VITE_GROUP_NAME as string | undefined)?.trim() ?? "";
-const GROUP_NAME = RAW_GROUP_NAME.length > 0 ? RAW_GROUP_NAME : "Family";
+const GROUP_NAME = RAW_GROUP_NAME.length > 0 ? RAW_GROUP_NAME : "Group";
 
 export function App(): JSX.Element {
   const [liveQ, leaderboardQ, fixturesQ, standingsQ] = useQueries({

@@ -1,6 +1,6 @@
 # World Cup Sweepstakes
 
-Family sweepstakes leaderboard for the 2026 FIFA World Cup. Each participant
+Group sweepstakes leaderboard for the 2026 FIFA World Cup. Each participant
 gets a few teams in a draw; the site shows live matches grouped by participant,
 group standings, and the full fixture list — refreshed automatically during
 live match windows.
@@ -91,8 +91,10 @@ Requires `vercel login` + `vercel link` once per machine.
 
 ## Deploy
 
-1. **Replace placeholder teams** in `data/tournament-teams.json` with the real
-   2026 draw (codes, names, groups A–L).
+1. **Tournament teams** are auto-generated from openfootball/worldcup.json
+   by `scripts/seed-teams.ts`, which runs on `prebuild` and `predev`. The
+   resulting `data/tournament-teams.json` is gitignored — never edit by hand.
+   Vercel includes `data/**` in the function bundle via `vercel.json`.
 2. **Create an Upstash Redis database** (sign up at upstash.com, free tier).
    Copy the REST URL + token into Vercel env as `KV_REST_API_URL` and
    `KV_REST_API_TOKEN`.

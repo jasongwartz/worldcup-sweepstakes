@@ -569,7 +569,7 @@ section.block:nth-of-type(4) { animation-delay: 300ms; }
 }
 
 /* ------------------------------------------------------------------
-   LIVE — family head-to-head match cards
+   LIVE — group head-to-head match cards
 ------------------------------------------------------------------ */
 .live-grid {
   display: grid;

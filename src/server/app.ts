@@ -4,6 +4,7 @@ import { Hono } from "hono";
 import { TournamentTeamsFileSchema } from "../core/schemas.ts";
 import { computeLeaderboard } from "../core/scoring.ts";
 import { type Team } from "../core/types.ts";
+import { authMiddleware } from "./auth.ts";
 import { createCache } from "./cache.ts";
 import {
   buildOwnersMap,
@@ -20,12 +21,16 @@ export function createApp(env: NodeJS.ProcessEnv = process.env): Hono {
   const config = readResultsConfig(env);
   const teams = loadTournamentTeams();
 
+  // Health check is uncredentialed so platform pingers can hit it.
+  app.use("/api/*", authMiddleware(env));
+
   app.get("/api/health", (c) =>
     c.json({
       ok: true,
       cache: cache.kind,
       source: config.source,
       ttlSeconds: config.ttlSeconds,
+      authEnabled: env.APP_PASSKEY ? true : false,
     }),
   );
 

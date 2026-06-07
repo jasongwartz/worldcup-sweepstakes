@@ -11,7 +11,7 @@ interface ResponseEnvelope {
   degraded: boolean;
 }
 
-/** Mapping of team code → participant name (the family member who drew that team). */
+/** Mapping of team code → participant name (the group member who drew that team). */
 export type Owners = Record<string, string>;
 
 export type FixturesResponse = ResponseEnvelope & {

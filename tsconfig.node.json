@@ -3,5 +3,13 @@
   "compilerOptions": {
     "types": ["node"]
   },
-  "include": ["src/server", "src/core", "scripts", "api", "vite.config.ts"]
+  "include": [
+    "src/server",
+    "src/core",
+    "src/auth",
+    "scripts",
+    "api",
+    "vite.config.ts",
+    "middleware.ts"
+  ]
 }

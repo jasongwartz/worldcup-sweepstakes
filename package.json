@@ -4,13 +4,16 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "tsx scripts/seed-teams.ts",
     "dev": "concurrently -k -n vite,api -c blue,green \"npm:dev:client\" \"npm:dev:server\"",
     "dev:client": "vite",
     "dev:server": "tsx watch src/server/dev.ts",
+    "prebuild": "tsx scripts/seed-teams.ts",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "typecheck": "tsc -b --noEmit",
     "draw": "tsx scripts/draw.ts",
+    "seed:teams": "tsx scripts/seed-teams.ts",
     "push-secrets": "tsx scripts/push-secrets.ts"
   },
   "dependencies": {
