@@ -1,5 +1,6 @@
 import { type JSX, useMemo, useState } from "react";
 import { useQueries } from "@tanstack/react-query";
+import { Analytics } from "@vercel/analytics/react";
 import {
   FIXTURE_STAGE_LABELS,
   type FixtureStage,
@@ -89,6 +90,7 @@ export function App(): JSX.Element {
           </em>
         </span>
       </footer>
+      <Analytics />
     </main>
   );
 }
