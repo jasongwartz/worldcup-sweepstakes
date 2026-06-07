@@ -1,4 +1,4 @@
-import { type Team, type TeamCode } from "./types.ts";
+import { type Team, type TeamCode } from "./types";
 
 /**
  * Build a normalized-name → code lookup so upstream team names from either

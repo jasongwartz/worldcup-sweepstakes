@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { type FixtureStage } from "../../core/fixture-stages.ts";
-import { buildTeamCodeIndex, lookupTeamCode } from "../../core/teams-lookup.ts";
+import { type FixtureStage } from "../../core/fixture-stages";
+import { buildTeamCodeIndex, lookupTeamCode } from "../../core/teams-lookup";
 import {
   type Fixture,
   type FixtureTeam,
@@ -8,8 +8,8 @@ import {
   type StandingRow,
   type Team,
   type TeamCode,
-} from "../../core/types.ts";
-import { type ResultsSource } from "./types.ts";
+} from "../../core/types";
+import { type ResultsSource } from "./types";
 
 const OF_URL =
   "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json";

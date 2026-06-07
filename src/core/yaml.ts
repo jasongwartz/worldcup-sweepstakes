@@ -2,8 +2,8 @@ import yaml from "js-yaml";
 import {
   DrawYamlSchema,
   ParticipantsYamlSchema,
-} from "./schemas.ts";
-import { type ParticipantDraw } from "./types.ts";
+} from "./schemas";
+import { type ParticipantDraw } from "./types";
 
 export function parseParticipants(yamlText: string): string[] {
   const parsed: unknown = yaml.load(yamlText);

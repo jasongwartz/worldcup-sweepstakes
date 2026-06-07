@@ -12,8 +12,8 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { parseArgs } from "./lib/cli.ts";
-import { ensureVercelReady, setVercelEnvAll } from "./lib/vercel.ts";
+import { parseArgs } from "./lib/cli";
+import { ensureVercelReady, setVercelEnvAll } from "./lib/vercel";
 
 const { flags } = parseArgs(process.argv.slice(2));
 

@@ -5,7 +5,7 @@ import {
   evaluateAuth,
   isPublicPath,
   parseCookieHeader,
-} from "../auth/shared.ts";
+} from "../auth/shared";
 
 /**
  * Hono-side gate so `npm run dev:server` mimics production for direct API

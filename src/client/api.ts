@@ -3,7 +3,7 @@ import {
   type GroupStanding,
   type Leaderboard,
   type LiveMatch,
-} from "../core/types.ts";
+} from "../core/types";
 
 interface ResponseEnvelope {
   lastUpdated: string;

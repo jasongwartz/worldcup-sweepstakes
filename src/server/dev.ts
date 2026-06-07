@@ -1,6 +1,6 @@
 import { serve } from "@hono/node-server";
 import { resolve } from "node:path";
-import { createApp } from "./app.ts";
+import { createApp } from "./app";
 
 // Load .env.local before reading any env vars. Built into Node 20.6+.
 try {

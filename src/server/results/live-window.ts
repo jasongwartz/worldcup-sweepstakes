@@ -1,4 +1,4 @@
-import { type Fixture, type FixtureStatus } from "../../core/types.ts";
+import { type Fixture, type FixtureStatus } from "../../core/types";
 
 const LIVE_STATUSES = new Set<FixtureStatus>([
   "live",

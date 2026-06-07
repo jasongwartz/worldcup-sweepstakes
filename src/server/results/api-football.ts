@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { type FixtureStage } from "../../core/fixture-stages.ts";
-import { buildTeamCodeIndex, lookupTeamCode } from "../../core/teams-lookup.ts";
+import { type FixtureStage } from "../../core/fixture-stages";
+import { buildTeamCodeIndex, lookupTeamCode } from "../../core/teams-lookup";
 import {
   type Fixture,
   type FixtureStatus,
@@ -8,8 +8,8 @@ import {
   type GroupStanding,
   type StandingRow,
   type TeamCode,
-} from "../../core/types.ts";
-import { type ResultsSource } from "./types.ts";
+} from "../../core/types";
+import { type ResultsSource } from "./types";
 
 const BASE_URL = "https://v3.football.api-sports.io";
 const WC_LEAGUE_ID = 1;

@@ -5,14 +5,14 @@ import {
   type ParticipantDraw,
   type ResultsBundle,
   type Team,
-} from "../../core/types.ts";
-import { type Cache, type CacheEntry } from "../cache.ts";
-import { isInLiveWindow, pickLiveFixtures } from "./live-window.ts";
+} from "../../core/types";
+import { type Cache, type CacheEntry } from "../cache";
+import { isInLiveWindow, pickLiveFixtures } from "./live-window";
 import {
   readResultsConfig,
   selectResultsSource,
   type ResultsConfig,
-} from "./source.ts";
+} from "./source";
 
 const CACHE_KEY = "wc:results:v1";
 
