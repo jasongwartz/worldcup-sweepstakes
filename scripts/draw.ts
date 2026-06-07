@@ -14,10 +14,10 @@
 import { randomBytes } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { parseParticipants, stringifyDraw } from "../src/core/yaml";
-import { TournamentTeamsFileSchema } from "../src/core/schemas";
-import { parseArgs } from "./lib/cli";
-import { seededRandom, shuffle } from "./lib/random";
+import { parseParticipants, stringifyDraw } from "../src/core/yaml.js";
+import { TournamentTeamsFileSchema } from "../src/core/schemas.js";
+import { parseArgs } from "./lib/cli.js";
+import { seededRandom, shuffle } from "./lib/random.js";
 
 const { flags } = parseArgs(process.argv.slice(2));
 

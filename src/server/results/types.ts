@@ -3,7 +3,7 @@ import {
   type GroupStanding,
   type ResultsSourceName,
   type Team,
-} from "../../core/types";
+} from "../../core/types.js";
 
 /**
  * A ResultsSource normalizes one upstream API into our wire shape. The cache,

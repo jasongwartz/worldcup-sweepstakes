@@ -1,6 +1,6 @@
-import { type Fixture, type GroupStanding } from "../../core/types";
-import { openFootballSource } from "./openfootball";
-import { type ResultsSource } from "./types";
+import { type Fixture, type GroupStanding } from "../../core/types.js";
+import { openFootballSource } from "./openfootball.js";
+import { type ResultsSource } from "./types.js";
 
 /**
  * Wraps openfootball with synthetic scores + a couple of live matches so the

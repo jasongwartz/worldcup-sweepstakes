@@ -1,8 +1,8 @@
-import { type ResultsSourceName } from "../../core/types";
-import { apiFootballSource } from "./api-football";
-import { demoSource } from "./demo";
-import { openFootballSource } from "./openfootball";
-import { type ResultsSource } from "./types";
+import { type ResultsSourceName } from "../../core/types.js";
+import { apiFootballSource } from "./api-football.js";
+import { demoSource } from "./demo.js";
+import { openFootballSource } from "./openfootball.js";
+import { type ResultsSource } from "./types.js";
 
 export type ConfiguredSource = ResultsSourceName | "demo";
 

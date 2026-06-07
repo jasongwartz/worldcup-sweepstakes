@@ -10,7 +10,7 @@ import {
   isPublicPath,
   LOCKED_HTML,
   parseCookieHeader,
-} from "./src/auth/shared";
+} from "./src/auth/shared.js";
 
 export const config = {
   // Match everything (HTML, JS, CSS, API). The shared logic exempts public

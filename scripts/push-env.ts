@@ -19,14 +19,14 @@
  */
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { die, parseArgs } from "./lib/cli";
+import { die, parseArgs } from "./lib/cli.js";
 import {
   ALL_ENVS,
   ensureVercelReady,
   setVercelEnv,
   setVercelEnvAll,
   type VercelEnv,
-} from "./lib/vercel";
+} from "./lib/vercel.js";
 
 const { flags } = parseArgs(process.argv.slice(2));
 

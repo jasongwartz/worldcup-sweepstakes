@@ -1,5 +1,5 @@
-import { parseDraw, parseParticipants } from "../core/yaml";
-import { type ParticipantDraw } from "../core/types";
+import { parseDraw, parseParticipants } from "../core/yaml.js";
+import { type ParticipantDraw } from "../core/types.js";
 
 export interface Secrets {
   participants: string[];

@@ -1,4 +1,4 @@
-import { type Team, type TeamCode } from "./types";
+import { type Team, type TeamCode } from "./types.js";
 
 /**
  * Build a normalized-name → code lookup so upstream team names from either

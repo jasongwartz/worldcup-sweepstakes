@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { FIXTURE_STAGES } from "./fixture-stages";
-import { STAGES } from "./stages";
+import { FIXTURE_STAGES } from "./fixture-stages.js";
+import { STAGES } from "./stages.js";
 
 export const StageSchema = z.enum(STAGES);
 export const FixtureStageSchema = z.enum(FIXTURE_STAGES);

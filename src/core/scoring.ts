@@ -1,7 +1,7 @@
 import {
   FIXTURE_STAGES,
   type FixtureStage,
-} from "./fixture-stages";
+} from "./fixture-stages.js";
 import {
   type Fixture,
   type GroupStanding,
@@ -10,7 +10,7 @@ import {
   type LeaderboardTeamRef,
   type ParticipantDraw,
   type TeamCode,
-} from "./types";
+} from "./types.js";
 
 interface TeamScoreData {
   code: TeamCode;

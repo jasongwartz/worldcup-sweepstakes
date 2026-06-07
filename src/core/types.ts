@@ -1,6 +1,6 @@
-import { type FixtureStage } from "./fixture-stages";
-import { type Stage } from "./stages";
-export type { FixtureStage } from "./fixture-stages";
+import { type FixtureStage } from "./fixture-stages.js";
+import { type Stage } from "./stages.js";
+export type { FixtureStage } from "./fixture-stages.js";
 
 export type TeamCode = string;
 export type ParticipantName = string;

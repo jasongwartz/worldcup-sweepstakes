@@ -11,9 +11,9 @@
  */
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { TournamentTeamsFileSchema } from "../src/core/schemas";
-import { parseDraw } from "../src/core/yaml";
-import { die, parseArgs } from "./lib/cli";
+import { TournamentTeamsFileSchema } from "../src/core/schemas.js";
+import { parseDraw } from "../src/core/yaml.js";
+import { die, parseArgs } from "./lib/cli.js";
 
 const { flags } = parseArgs(process.argv.slice(2));
 

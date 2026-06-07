@@ -4,12 +4,12 @@ import { Analytics } from "@vercel/analytics/react";
 import {
   FIXTURE_STAGE_LABELS,
   type FixtureStage,
-} from "../core/fixture-stages";
+} from "../core/fixture-stages.js";
 import {
   type Fixture,
   type LeaderboardEntry,
   type LiveMatch,
-} from "../core/types";
+} from "../core/types.js";
 import {
   api,
   type FixturesResponse,
@@ -17,7 +17,7 @@ import {
   type LiveMatchesResponse,
   type Owners,
   type StandingsResponse,
-} from "./api";
+} from "./api.js";
 
 const STAGE_ORDER = Object.keys(FIXTURE_STAGE_LABELS) as FixtureStage[];
 const STAGE_NUM: Record<FixtureStage, string> = {

@@ -6,7 +6,7 @@ import {
   isPublicPath,
   LOCKED_HTML,
   parseCookieHeader,
-} from "./src/auth/shared";
+} from "./src/auth/shared.js";
 
 /**
  * Dev-only mirror of `middleware.ts` (the Vercel Edge gate). Lets us test the

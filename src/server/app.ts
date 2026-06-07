@@ -1,19 +1,19 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { Hono } from "hono";
-import { TournamentTeamsFileSchema } from "../core/schemas";
-import { computeLeaderboard } from "../core/scoring";
-import { type Team } from "../core/types";
-import { authMiddleware } from "./auth";
-import { createCache } from "./cache";
+import { TournamentTeamsFileSchema } from "../core/schemas.js";
+import { computeLeaderboard } from "../core/scoring.js";
+import { type Team } from "../core/types.js";
+import { authMiddleware } from "./auth.js";
+import { createCache } from "./cache.js";
 import {
   buildOwnersMap,
   enrichLiveMatches,
   getResults,
   groupLiveFixturesByParticipant,
   readResultsConfig,
-} from "./results/service";
-import { loadSecrets } from "./secrets";
+} from "./results/service.js";
+import { loadSecrets } from "./secrets.js";
 
 export function createApp(env: NodeJS.ProcessEnv = process.env): Hono {
   const app = new Hono();
