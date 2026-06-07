@@ -1,0 +1,23 @@
+node_modules
+dist
+.vercel
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+
+# Local secrets — never commit
+teams.yaml
+draw.yaml
+
+# Local cache (used when Upstash Redis isn't configured)
+.cache.local.json
+.snapshot.local.json
+
+# Editor / OS
+.DS_Store
+.idea
+.vscode/*
+!.vscode/settings.json
+
+data
