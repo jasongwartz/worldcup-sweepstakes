@@ -33,13 +33,15 @@ interface TeamRankInfo {
 
 /**
  * Tournament-wide ranking of every team. Lower rank = better-placed.
+ * Teams that genuinely tie on all real metrics share a rank — important
+ * pre-tournament, when nothing differentiates the 48 teams yet.
  *
  * Sort order:
  *   1. Champion always at rank 1.
  *   2. Deepest stage reached (FINAL > SF > QF > R16 > R32 > GROUP).
  *   3. Still alive at that stage (won their last match) > eliminated at that stage.
  *   4. Group-stage points / GD / GF.
- *   5. Name (alphabetical, deterministic tiebreaker).
+ *   No alphabetical fallback — tied teams share a rank.
  */
 export function rankAllTeams(
   fixtures: readonly Fixture[],
@@ -49,9 +51,14 @@ export function rankAllTeams(
   const sorted = Array.from(teams.values()).sort(compareTeams);
 
   const info = new Map<TeamCode, TeamRankInfo>();
+  let currentRank = 0;
   sorted.forEach((team, i) => {
+    const prev = sorted[i - 1];
+    if (!prev || compareTeams(prev, team) !== 0) {
+      currentRank = i + 1;
+    }
     info.set(team.code, {
-      rank: i + 1,
+      rank: currentRank,
       eliminated: team.eliminatedAt !== null,
       champion: team.champion,
     });
@@ -73,8 +80,7 @@ function compareTeams(a: TeamScoreData, b: TeamScoreData): number {
   return (
     b.points - a.points ||
     b.goalDifference - a.goalDifference ||
-    b.goalsFor - a.goalsFor ||
-    a.name.localeCompare(b.name)
+    b.goalsFor - a.goalsFor
   );
 }
 
