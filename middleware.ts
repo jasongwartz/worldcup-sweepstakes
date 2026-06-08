@@ -8,8 +8,8 @@ import {
   buildCookie,
   evaluateAuth,
   isPublicPath,
-  LOCKED_HTML,
   parseCookieHeader,
+  renderLockedHtml,
 } from "./src/auth/shared.js";
 
 export const config = {
@@ -44,7 +44,7 @@ export default function middleware(request: Request): Response | undefined {
       return new Response(null, { status: 302, headers });
     }
     case "deny":
-      return new Response(LOCKED_HTML, {
+      return new Response(renderLockedHtml({ wrongKey: decision.wrongKey }), {
         status: 401,
         headers: { "content-type": "text/html; charset=utf-8" },
       });

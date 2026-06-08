@@ -14,14 +14,15 @@ export const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
 export type AuthDecision =
   | { type: "pass" }
   | { type: "redirect"; cookieValue: string; location: string }
-  | { type: "deny" };
+  | { type: "deny"; wrongKey: boolean };
 
 /**
  * Decide what to do with a request.
  *
  *   - cookie matches passkey         → pass
  *   - `?key=<passkey>` present       → redirect to clean URL, set cookie
- *   - otherwise                      → deny (caller renders LOCKED_HTML)
+ *   - `?key=<anything else>`         → deny with wrongKey=true (caller can show error)
+ *   - otherwise                      → deny with wrongKey=false
  */
 export function evaluateAuth(opts: {
   pathname: string;
@@ -45,7 +46,7 @@ export function evaluateAuth(opts: {
     };
   }
 
-  return { type: "deny" };
+  return { type: "deny", wrongKey: provided !== null };
 }
 
 export function buildCookie(value: string, opts: { secure: boolean }): string {
@@ -78,7 +79,11 @@ export function isPublicPath(pathname: string): boolean {
   return pathname === "/api/health";
 }
 
-export const LOCKED_HTML = `<!doctype html>
+export function renderLockedHtml(opts: { wrongKey: boolean }): string {
+  const errorBanner = opts.wrongKey
+    ? `<p class="error">That key didn't work — try again.</p>`
+    : `<p class="hint">Have a passkey from the group owner?</p>`;
+  return `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -86,6 +91,7 @@ export const LOCKED_HTML = `<!doctype html>
     <title>Locked</title>
     <style>
       :root { color-scheme: dark; }
+      * { box-sizing: border-box; }
       body {
         background: #0a0908;
         color: #f6f1e8;
@@ -95,22 +101,62 @@ export const LOCKED_HTML = `<!doctype html>
         display: grid;
         place-items: center;
       }
-      .wrap { text-align: center; padding: 2rem; max-width: 28rem; }
+      .wrap { text-align: center; padding: 2rem; width: 100%; max-width: 26rem; }
       h1 {
         font-family: "Iowan Old Style", "Apple Garamond", Georgia, serif;
         font-style: italic;
         font-weight: 400;
         font-size: 2.75rem;
-        margin: 0 0 1rem;
+        margin: 0 0 0.5rem;
         letter-spacing: -0.015em;
       }
-      p { color: #b3aba0; line-height: 1.6; margin: 0; }
+      .hint, .error { color: #b3aba0; line-height: 1.6; margin: 0 0 1.5rem; font-size: 0.95rem; }
+      .error { color: #f25240; }
+      form { display: flex; gap: 0.5rem; }
+      input[type="password"] {
+        flex: 1;
+        background: #15130f;
+        border: 1px solid #2c2823;
+        color: #f6f1e8;
+        font: inherit;
+        font-size: 1rem;
+        padding: 0.7rem 0.9rem;
+        border-radius: 4px;
+        min-width: 0;
+        outline: none;
+        transition: border-color 150ms ease;
+      }
+      input[type="password"]:focus { border-color: #d4a64a; }
+      button {
+        background: #d4a64a;
+        color: #0a0908;
+        border: 0;
+        font: inherit;
+        font-weight: 600;
+        padding: 0.7rem 1.1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 150ms ease;
+      }
+      button:hover { background: #e3b558; }
     </style>
   </head>
   <body>
     <div class="wrap">
       <h1>Locked</h1>
-      <p>Ask the group owner for the link.</p>
+      ${errorBanner}
+      <form method="GET" action="/" autocomplete="on">
+        <input
+          type="password"
+          name="key"
+          placeholder="Passkey"
+          autocomplete="current-password"
+          autofocus
+          required
+        />
+        <button type="submit">Unlock</button>
+      </form>
     </div>
   </body>
 </html>`;
+}

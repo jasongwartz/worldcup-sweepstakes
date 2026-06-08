@@ -4,8 +4,8 @@ import {
   buildCookie,
   evaluateAuth,
   isPublicPath,
-  LOCKED_HTML,
   parseCookieHeader,
+  renderLockedHtml,
 } from "./src/auth/shared.js";
 
 /**
@@ -48,7 +48,7 @@ function authPlugin(passkey: string): PluginOption {
       case "deny":
         res.statusCode = 401;
         res.setHeader("Content-Type", "text/html; charset=utf-8");
-        res.end(LOCKED_HTML);
+        res.end(renderLockedHtml({ wrongKey: decision.wrongKey }));
         return;
     }
   };
