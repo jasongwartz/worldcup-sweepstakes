@@ -301,7 +301,7 @@ function LeaderboardBlock({
           <span>The standings</span>
         </div>
         <h2 className="section-title">
-          Who&apos;s leading the <em>{GROUP_NAME}</em>
+          Who&apos;s leading <em>{GROUP_NAME}</em>
         </h2>
         <div className="section-meta">
           Ranked by each participant&apos;s best-placed team · winner-takes-all
