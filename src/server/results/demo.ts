@@ -18,7 +18,6 @@ export const demoSource: ResultsSource = {
 
   async getStandings(input) {
     // Recompute standings from our overlaid fixtures so they line up.
-    const { deriveStandingsFromOverlay } = await import("./demo.ts");
     const fixtures = overlay(await openFootballSource.getFixtures(input));
     return deriveStandingsFromOverlay(fixtures, input.teams);
   },
