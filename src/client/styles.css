@@ -573,7 +573,7 @@ section.block:nth-of-type(4) { animation-delay: 300ms; }
 ------------------------------------------------------------------ */
 .live-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(420px, 100%), 1fr));
   gap: 1rem;
 }
 
@@ -700,7 +700,7 @@ section.block:nth-of-type(4) { animation-delay: 300ms; }
 ------------------------------------------------------------------ */
 .participant-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
   gap: 1rem;
 }
 
@@ -850,7 +850,7 @@ section.block:nth-of-type(4) { animation-delay: 300ms; }
 ------------------------------------------------------------------ */
 .groups-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
   gap: 0.75rem;
 }
 

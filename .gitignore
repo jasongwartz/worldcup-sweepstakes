@@ -22,3 +22,4 @@ draw.yaml
 !.vscode/settings.json
 
 data
+.env*
