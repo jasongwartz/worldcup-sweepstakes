@@ -468,6 +468,8 @@ function DetailsBlock({
 
       {open && (
         <div className="details-content">
+          {fixtures && <FixturesList data={fixtures} />}
+
           {standings && (
             <div className="details-sub">
               <h3 className="details-sub-title">Group stage</h3>
@@ -535,8 +537,6 @@ function DetailsBlock({
               </div>
             </div>
           )}
-
-          {fixtures && <FixturesList data={fixtures} />}
         </div>
       )}
     </section>

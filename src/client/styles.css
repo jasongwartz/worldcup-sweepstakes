@@ -1186,10 +1186,23 @@ section.block:nth-of-type(4) { animation-delay: 300ms; }
 @media (max-width: 720px) {
   .fixture-row {
     grid-template-columns: 1fr 4rem 1fr;
-    gap: 0.5rem;
+    grid-template-areas:
+      "when when when"
+      "home center away";
+    row-gap: 0.4rem;
+    column-gap: 0.5rem;
     font-size: 13px;
   }
-  .fixture-row .when,
+  .fixture-row .when {
+    grid-area: when;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .fixture-row .when .time { display: inline; }
+  .fixture-row .team-home { grid-area: home; }
+  .fixture-row .center { grid-area: center; }
+  .fixture-row .team-away { grid-area: away; }
   .fixture-row .meta { display: none; }
   .group-card .gc-letter { font-size: 2.8rem; }
   .masthead { grid-template-columns: 1fr; }
