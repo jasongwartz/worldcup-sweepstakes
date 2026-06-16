@@ -14,7 +14,7 @@ import { type Team, type TeamCode } from "./types.js";
  */
 const NAME_ALIASES: Record<TeamCode, readonly string[]> = {
   TUR: ["Turkey", "Türkiye", "Turkiye"],
-  CPV: ["Cape Verde", "Cabo Verde"],
+  CPV: ["Cape Verde", "Cape Verde Islands", "Cabo Verde"],
   CIV: ["Ivory Coast", "Côte d'Ivoire", "Cote d'Ivoire"],
   KOR: ["South Korea", "Korea Republic", "Republic of Korea"],
   USA: ["United States", "USA", "United States of America"],
