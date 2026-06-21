@@ -1,5 +1,5 @@
 import { type JSX, useMemo, useState } from "react";
-import { useQueries } from "@tanstack/react-query";
+import { useQueries, useQueryClient } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/react";
 import {
   FIXTURE_STAGE_LABELS,
@@ -68,6 +68,8 @@ export function App(): JSX.Element {
 
   return (
     <main className="page">
+      <RefreshButton />
+
       <Masthead meta={meta} liveCount={liveQ.data?.matches.length ?? 0} />
 
       {anyError && <div className="error-box block">{anyError.message}</div>}
@@ -92,6 +94,50 @@ export function App(): JSX.Element {
       </footer>
       <Analytics />
     </main>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Refresh — manual pull of every query (no native PWA pull-to-refresh on iOS)
+// ---------------------------------------------------------------------------
+
+function RefreshButton(): JSX.Element {
+  const queryClient = useQueryClient();
+  const [spinning, setSpinning] = useState(false);
+
+  const handleRefresh = (): void => {
+    if (spinning) return;
+    setSpinning(true);
+    void queryClient.refetchQueries().finally(() => {
+      setSpinning(false);
+    });
+  };
+
+  return (
+    <button
+      type="button"
+      className={`refresh-btn${spinning ? " spinning" : ""}`}
+      onClick={handleRefresh}
+      disabled={spinning}
+      aria-label="Refresh data"
+      title="Refresh"
+    >
+      <svg
+        className="refresh-icon"
+        viewBox="0 0 24 24"
+        width="18"
+        height="18"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+        <polyline points="21 3 21 9 15 9" />
+      </svg>
+    </button>
   );
 }
 
