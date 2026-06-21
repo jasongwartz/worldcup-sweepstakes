@@ -277,25 +277,15 @@ section.block:nth-of-type(4) { animation-delay: 300ms; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--ink-4);
-  border-radius: 50%;
-  background: var(--ink-2);
-  color: var(--bone);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
-  transition: border-color 160ms var(--ease), color 160ms var(--ease),
-    background 160ms var(--ease);
+  padding: 0.5rem;
+  color: var(--ash);
+  transition: color 160ms var(--ease);
   -webkit-tap-highlight-color: transparent;
 }
 
-.refresh-btn:hover {
-  border-color: var(--copa);
-  color: var(--copa);
-  background: var(--ink-3);
-}
+.refresh-btn:hover { color: var(--copa); }
 
-.refresh-btn:active { transform: scale(0.94); }
+.refresh-btn:active { transform: scale(0.9); }
 
 .refresh-btn:disabled { cursor: default; color: var(--copa); }
 
