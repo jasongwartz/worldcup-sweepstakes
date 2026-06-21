@@ -47,4 +47,11 @@ export const api = {
   live: () => getJson<LiveMatchesResponse>("/api/results/live"),
   fixtures: () => getJson<FixturesResponse>("/api/results/fixtures"),
   standings: () => getJson<StandingsResponse>("/api/results/standings"),
+  /**
+   * Force a single upstream pull, warming the shared server cache. One call is
+   * enough — every endpoint reads the same bundle — so the follow-up refetch of
+   * the other queries reads the now-fresh cache without re-hitting upstream.
+   */
+  forceRefresh: () =>
+    getJson<LeaderboardResponse>("/api/results/leaderboard?forceUpdate=1"),
 };

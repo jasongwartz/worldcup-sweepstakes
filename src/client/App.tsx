@@ -108,9 +108,15 @@ function RefreshButton(): JSX.Element {
   const handleRefresh = (): void => {
     if (spinning) return;
     setSpinning(true);
-    void queryClient.refetchQueries().finally(() => {
-      setSpinning(false);
-    });
+    // Force one upstream pull to warm the server cache, then refetch every
+    // query from it. Ignore a failed force — refetch still serves what's there.
+    void api
+      .forceRefresh()
+      .catch(() => undefined)
+      .then(() => queryClient.refetchQueries())
+      .finally(() => {
+        setSpinning(false);
+      });
   };
 
   return (
