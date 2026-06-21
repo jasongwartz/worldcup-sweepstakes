@@ -267,6 +267,53 @@ section.block:nth-of-type(4) { animation-delay: 300ms; }
 }
 
 /* ------------------------------------------------------------------
+   Refresh button — fixed top-right, respects iOS safe-area insets
+------------------------------------------------------------------ */
+.refresh-btn {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 1rem);
+  right: calc(env(safe-area-inset-right, 0px) + 1rem);
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--ink-4);
+  border-radius: 50%;
+  background: var(--ink-2);
+  color: var(--bone);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  transition: border-color 160ms var(--ease), color 160ms var(--ease),
+    background 160ms var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.refresh-btn:hover {
+  border-color: var(--copa);
+  color: var(--copa);
+  background: var(--ink-3);
+}
+
+.refresh-btn:active { transform: scale(0.94); }
+
+.refresh-btn:disabled { cursor: default; color: var(--copa); }
+
+.refresh-icon { display: block; }
+
+.refresh-btn.spinning .refresh-icon {
+  animation: refresh-spin 700ms linear infinite;
+}
+
+@keyframes refresh-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .refresh-btn.spinning .refresh-icon { animation-duration: 1400ms; }
+}
+
+/* ------------------------------------------------------------------
    Live indicator
 ------------------------------------------------------------------ */
 .live-pip {
