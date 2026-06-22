@@ -115,10 +115,9 @@ export function createApp(env: NodeJS.ProcessEnv = process.env): Hono {
   return app;
 }
 
-/** Truthy `?forceUpdate=` query param — bypasses the results cache gates. */
+/** Whether the `?forceUpdate` query param is present — bypasses cache gates. */
 function wantsForce(c: Context): boolean {
-  const raw = c.req.query("forceUpdate");
-  return raw === "1" || raw?.toLowerCase() === "true";
+  return !!c.req.query("forceUpdate");
 }
 
 function loadTournamentTeams(): Team[] {
