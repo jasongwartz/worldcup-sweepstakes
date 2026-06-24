@@ -20,6 +20,12 @@ export interface ResultsServiceDeps {
   cache: Cache;
   config: ResultsConfig;
   teams: readonly Team[];
+  /**
+   * Bypass the TTL and live-window gates and pull from upstream now. Used by
+   * the client's manual refresh. On upstream failure we still fall back to the
+   * cached bundle (flagged degraded) rather than erroring.
+   */
+  force?: boolean;
 }
 
 export interface ResultsResponse {
@@ -41,41 +47,37 @@ export interface ResultsResponse {
  *
  * "Live window" is computed from the *cached* fixtures, so refreshes only
  * happen around real matches. This self-rate-limits regardless of source.
+ *
+ * A `force` request bypasses both gates and always pulls upstream.
  */
 export async function getResults(
   deps: ResultsServiceDeps,
 ): Promise<ResultsResponse> {
-  const { cache, config } = deps;
+  const { cache, config, force = false } = deps;
   const cached = await cache.get<ResultsBundle>(CACHE_KEY);
   const now = new Date();
 
-  if (!cached) {
-    const fresh = await tryFetch(deps);
-    if (fresh.ok) {
-      await cache.set(CACHE_KEY, { data: fresh.bundle, lastUpdated: fresh.bundle.fetchedAt });
-      return {
-        bundle: fresh.bundle,
-        lastUpdated: fresh.bundle.fetchedAt,
-        refreshed: true,
-        degraded: false,
-      };
+  // Serve cached without an upstream call when it's still fresh, or stale but
+  // outside the live window. `force` skips both checks.
+  if (cached && !force) {
+    const ageMs = now.getTime() - Date.parse(cached.lastUpdated);
+    const ttlMs = config.ttlSeconds * 1000;
+    if (ageMs < ttlMs) {
+      return toResponse(cached, false, false);
     }
-    throw fresh.error;
+    if (!isInLiveWindow(cached.data.fixtures, now)) {
+      return toResponse(cached, false, false);
+    }
   }
 
-  const ageMs = now.getTime() - Date.parse(cached.lastUpdated);
-  const ttlMs = config.ttlSeconds * 1000;
-  if (ageMs < ttlMs) {
-    return toResponse(cached, false, false);
-  }
-
-  if (!isInLiveWindow(cached.data.fixtures, now)) {
-    return toResponse(cached, false, false);
-  }
-
+  // Reached when there's no cache, a forced refresh, or a stale bundle inside
+  // the live window — all cases that warrant an upstream pull.
   const fresh = await tryFetch(deps);
   if (fresh.ok) {
-    await cache.set(CACHE_KEY, { data: fresh.bundle, lastUpdated: fresh.bundle.fetchedAt });
+    await cache.set(CACHE_KEY, {
+      data: fresh.bundle,
+      lastUpdated: fresh.bundle.fetchedAt,
+    });
     return {
       bundle: fresh.bundle,
       lastUpdated: fresh.bundle.fetchedAt,
@@ -84,11 +86,14 @@ export async function getResults(
     };
   }
 
-  // Upstream failed mid-window: keep serving the last good bundle, flag degraded.
-  process.stderr.write(
-    `results refresh failed, serving cached: ${String(fresh.error)}\n`,
-  );
-  return toResponse(cached, false, true);
+  // Upstream failed: keep serving the last good bundle if we have one.
+  if (cached) {
+    process.stderr.write(
+      `results refresh failed, serving cached: ${String(fresh.error)}\n`,
+    );
+    return toResponse(cached, false, true);
+  }
+  throw fresh.error;
 }
 
 type FetchOutcome =
