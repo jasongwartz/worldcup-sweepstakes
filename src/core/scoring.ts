@@ -243,6 +243,23 @@ function collectTeamData(
     }
   }
 
+  // Promote top-2 finishers from completed groups to R32, even if the data
+  // source hasn't yet resolved their specific R32 bracket slot with their name.
+  // Without this, teams like Netherlands or Ivory Coast stay ranked as
+  // "alive at GROUP" while other groups' winners are already showing "alive at
+  // R32" simply because openfootball filled in their fixture slot sooner.
+  for (const group of standings) {
+    const complete =
+      group.rows.length > 0 && group.rows.every((r) => r.played >= 3);
+    if (!complete) continue;
+    for (const row of group.rows) {
+      if (!row.teamCode || row.rank > 2) continue;
+      const team = teams.get(row.teamCode);
+      if (!team || team.reached !== "GROUP") continue;
+      team.reached = "R32";
+    }
+  }
+
   return teams;
 }
 
