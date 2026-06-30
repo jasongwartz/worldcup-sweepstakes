@@ -692,18 +692,9 @@ function FixtureRow({
         <span className="date">{dateLabel}</span>
         <span className="time">{timeLabel}</span>
       </div>
-      <div
-        className={`team-home${fx.home.resolved ? "" : " placeholder"}${penWinner === "home" ? " pen-winner" : ""}`}
-      >
+      <div className={`team-home${fx.home.resolved ? "" : " placeholder"}`}>
         <span className="team-block">
-          <span className="name">
-            {fx.home.name}
-            {penWinner === "home" && (
-              <span className="pen-badge" title="Won on penalties">
-                P
-              </span>
-            )}
-          </span>
+          <span className="name">{fx.home.name}</span>
           {homeOwner && <span className="team-owner">{homeOwner}</span>}
         </span>
         <span className="code">{fx.home.code ?? "—"}</span>
@@ -724,19 +715,10 @@ function FixtureRow({
           <span style={{ color: "var(--smoke)" }}>vs</span>
         )}
       </div>
-      <div
-        className={`team-away${fx.away.resolved ? "" : " placeholder"}${penWinner === "away" ? " pen-winner" : ""}`}
-      >
+      <div className={`team-away${fx.away.resolved ? "" : " placeholder"}`}>
         <span className="code">{fx.away.code ?? "—"}</span>
         <span className="team-block">
-          <span className="name">
-            {penWinner === "away" && (
-              <span className="pen-badge" title="Won on penalties">
-                P
-              </span>
-            )}
-            {fx.away.name}
-          </span>
+          <span className="name">{fx.away.name}</span>
           {awayOwner && <span className="team-owner">{awayOwner}</span>}
         </span>
       </div>
