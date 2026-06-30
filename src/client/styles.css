@@ -1145,6 +1145,29 @@ section.block:nth-of-type(4) { animation-delay: 300ms; }
   font-size: 16px;
 }
 .fixture-row .center .dash { color: var(--smoke); }
+.fixture-row .center .pens {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--pitch);
+  margin-top: 1px;
+}
+
+.fixture-row .pen-winner .name { color: var(--paper); font-weight: 600; }
+.fixture-row .pen-badge {
+  display: inline-block;
+  margin: 0 0.3em;
+  padding: 0 4px;
+  border-radius: 3px;
+  background: rgba(120, 200, 120, 0.16);
+  color: var(--pitch);
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 14px;
+  vertical-align: middle;
+}
 
 .fixture-row .meta {
   display: flex;
