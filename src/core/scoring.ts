@@ -88,6 +88,15 @@ function stageDepth(stage: FixtureStage): number {
   return FIXTURE_STAGES.indexOf(stage);
 }
 
+// Where the winner of a finished knockout fixture advances to. THIRD and
+// FINAL have no onward round (the FINAL winner is crowned champion instead).
+const NEXT_KNOCKOUT_STAGE: Partial<Record<FixtureStage, FixtureStage>> = {
+  R32: "R16",
+  R16: "QF",
+  QF: "SF",
+  SF: "FINAL",
+};
+
 /**
  * Compute the participant leaderboard.
  *
@@ -218,6 +227,24 @@ function collectTeamData(
     if (loserSide.code) {
       const team = teams.get(loserSide.code);
       if (team?.eliminatedAt === null) team.eliminatedAt = fx.stage;
+      // Semi-final losers drop into the third-place playoff; count that as
+      // reached without waiting for the data source to fill the THIRD slot.
+      if (team && fx.stage === "SF" && stageDepth("THIRD") > stageDepth(team.reached)) {
+        team.reached = "THIRD";
+      }
+    }
+    // Promote the winner into the next round even if the data source hasn't
+    // yet written their name into that round's fixture slot — the same
+    // transition gap the group→R32 promotion below covers.
+    const nextStage = NEXT_KNOCKOUT_STAGE[fx.stage];
+    if (nextStage) {
+      const winnerSide = fx[winner];
+      if (winnerSide.code) {
+        const team = teams.get(winnerSide.code);
+        if (team && stageDepth(nextStage) > stageDepth(team.reached)) {
+          team.reached = nextStage;
+        }
+      }
     }
     // Crown the champion when the FINAL is finished.
     if (fx.stage === "FINAL") {
@@ -255,7 +282,7 @@ function collectTeamData(
     for (const row of group.rows) {
       if (!row.teamCode || row.rank > 2) continue;
       const team = teams.get(row.teamCode);
-      if (!team || team.reached !== "GROUP") continue;
+      if (team?.reached !== "GROUP") continue;
       team.reached = "R32";
     }
   }
