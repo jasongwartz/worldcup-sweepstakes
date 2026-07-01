@@ -664,6 +664,13 @@ function FixtureRow({
   owners: Owners;
 }): JSX.Element {
   const hasScore = fx.homeScore !== null && fx.awayScore !== null;
+  const penalty = fx.scoreBreakdown?.penalty;
+  const penWinner =
+    penalty?.home != null && penalty.away != null && penalty.home !== penalty.away
+      ? penalty.home > penalty.away
+        ? "home"
+        : "away"
+      : null;
   const homeOwner = fx.home.code ? owners[fx.home.code] : undefined;
   const awayOwner = fx.away.code ? owners[fx.away.code] : undefined;
   const date = new Date(fx.kickoff);
@@ -698,6 +705,11 @@ function FixtureRow({
             {fx.homeScore}
             <span className="dash"> – </span>
             {fx.awayScore}
+            {penWinner && penalty && (
+              <span className="pens">
+                {penalty.home}–{penalty.away} pens
+              </span>
+            )}
           </>
         ) : (
           <span style={{ color: "var(--smoke)" }}>vs</span>
