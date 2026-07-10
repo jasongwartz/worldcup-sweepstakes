@@ -14,6 +14,13 @@ import {
 export interface ResultsSource {
   readonly name: ResultsSourceName;
   /**
+   * Whether this source can report in-play state (live/halftime statuses,
+   * elapsed minutes). Sources that only publish finished results should set
+   * this to false so the UI can hide live-only sections instead of showing
+   * a permanently empty "no live matches" state.
+   */
+  readonly supportsLive: boolean;
+  /**
    * `teams` is our tournament team list. Sources use it to map their
    * upstream team names back to our team codes.
    */

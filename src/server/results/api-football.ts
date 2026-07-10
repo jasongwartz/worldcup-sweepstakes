@@ -160,6 +160,7 @@ export function apiFootballSource(config: ApiFootballConfig): ResultsSource {
 
   return {
     name: "api-football",
+    supportsLive: true,
 
     async getFixtures({ teams }) {
       const url = `/fixtures?league=${String(WC_LEAGUE_ID)}&season=${String(config.season)}`;

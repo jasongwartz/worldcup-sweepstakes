@@ -13,12 +13,16 @@ import {
   groupLiveFixturesByParticipant,
   readResultsConfig,
 } from "./results/service.js";
+import { selectResultsSource } from "./results/source.js";
 import { loadSecrets } from "./secrets.js";
 
 export function createApp(env: NodeJS.ProcessEnv = process.env): Hono {
   const app = new Hono();
   const cache = createCache(env);
   const config = readResultsConfig(env);
+  // Capability of the source that will actually serve requests — accounts for
+  // the api-football → openfootball fallback when the key is missing.
+  const supportsLive = selectResultsSource(config).supportsLive;
   const teams = loadTournamentTeams();
 
   // Health check is uncredentialed so platform pingers can hit it.
@@ -29,6 +33,7 @@ export function createApp(env: NodeJS.ProcessEnv = process.env): Hono {
       ok: true,
       cache: cache.kind,
       source: config.source,
+      supportsLive,
       ttlSeconds: config.ttlSeconds,
       authEnabled: env.APP_PASSKEY ? true : false,
     }),
@@ -76,6 +81,7 @@ export function createApp(env: NodeJS.ProcessEnv = process.env): Hono {
       lastUpdated: r.lastUpdated,
       source: r.bundle.source,
       degraded: r.degraded,
+      supportsLive,
       matches,
     });
   });
@@ -108,6 +114,7 @@ export function createApp(env: NodeJS.ProcessEnv = process.env): Hono {
       lastUpdated: r.lastUpdated,
       source: r.bundle.source,
       degraded: r.degraded,
+      supportsLive,
       groups: grouped,
     });
   });

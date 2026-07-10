@@ -23,6 +23,8 @@ export type StandingsResponse = ResponseEnvelope & {
   owners: Owners;
 };
 export type LiveMatchesResponse = ResponseEnvelope & {
+  /** False when the configured source can't report in-play state. */
+  supportsLive: boolean;
   matches: LiveMatch[];
 };
 export type LeaderboardResponse = ResponseEnvelope & {

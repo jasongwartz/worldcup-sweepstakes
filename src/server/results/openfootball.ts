@@ -53,6 +53,9 @@ const ROUND_STAGE_MAP: { test: RegExp; stage: FixtureStage }[] = [
 
 export const openFootballSource: ResultsSource = {
   name: "openfootball",
+  // Results land as community commits after full time — matches never appear
+  // in a "live" status, only scheduled → finished.
+  supportsLive: false,
 
   async getFixtures({ teams }) {
     const file = await fetchOpenFootball();

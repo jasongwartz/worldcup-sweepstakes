@@ -10,6 +10,7 @@ import { type ResultsSource } from "./types.js";
  */
 export const demoSource: ResultsSource = {
   name: "openfootball",
+  supportsLive: true,
 
   async getFixtures(input) {
     const real = await openFootballSource.getFixtures(input);
