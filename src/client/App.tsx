@@ -65,16 +65,25 @@ export function App(): JSX.Element {
   const meta =
     leaderboardQ.data ?? liveQ.data ?? fixturesQ.data ?? standingsQ.data;
   const anyError = leaderboardQ.error ?? liveQ.error;
+  // Until the live response arrives, assume live is supported so the section
+  // skeleton doesn't pop in and out.
+  const supportsLive = liveQ.data?.supportsLive ?? true;
 
   return (
     <main className="page">
       <RefreshButton />
 
-      <Masthead meta={meta} liveCount={liveQ.data?.matches.length ?? 0} />
+      <Masthead
+        meta={meta}
+        liveCount={liveQ.data?.matches.length ?? 0}
+        supportsLive={supportsLive}
+      />
 
       {anyError && <div className="error-box block">{anyError.message}</div>}
 
-      <LiveMatchesBlock data={liveQ.data} isLoading={liveQ.isLoading} />
+      {supportsLive && (
+        <LiveMatchesBlock data={liveQ.data} isLoading={liveQ.isLoading} />
+      )}
 
       <LeaderboardBlock
         data={leaderboardQ.data}
@@ -148,6 +157,7 @@ function RefreshButton(): JSX.Element {
 function Masthead({
   meta,
   liveCount,
+  supportsLive,
 }: {
   meta:
     | LeaderboardResponse
@@ -156,6 +166,7 @@ function Masthead({
     | StandingsResponse
     | undefined;
   liveCount: number;
+  supportsLive: boolean;
 }): JSX.Element {
   return (
     <header className="masthead">
@@ -174,18 +185,20 @@ function Masthead({
       </div>
       <div className="masthead-meta">
         <dl>
-          <div>
-            <dt>Live now</dt>
-            <dd>
-              {liveCount > 0 ? (
-                <span className="live-pip">
-                  {String(liveCount)} match{liveCount === 1 ? "" : "es"}
-                </span>
-              ) : (
-                <span style={{ color: "var(--smoke)" }}>None</span>
-              )}
-            </dd>
-          </div>
+          {supportsLive && (
+            <div>
+              <dt>Live now</dt>
+              <dd>
+                {liveCount > 0 ? (
+                  <span className="live-pip">
+                    {String(liveCount)} match{liveCount === 1 ? "" : "es"}
+                  </span>
+                ) : (
+                  <span style={{ color: "var(--smoke)" }}>None</span>
+                )}
+              </dd>
+            </div>
+          )}
           <div>
             <dt>Source</dt>
             <dd>
