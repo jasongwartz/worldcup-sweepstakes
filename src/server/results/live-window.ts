@@ -8,12 +8,17 @@ const LIVE_STATUSES = new Set<FixtureStatus>([
 ]);
 
 const PRE_KICKOFF_WINDOW_MS = 30 * 60_000; // start refreshing 30 min before kickoff
-const POST_KICKOFF_WINDOW_MS = 4 * 60 * 60_000; // keep refreshing until 4h after (covers ET + penalties + late status updates)
 
 /**
- * True if any fixture is mid-match or close enough to kickoff that we should
- * keep the cache fresh. Lets the SWR layer skip upstream fetches the rest of
+ * True if any fixture is mid-match, close to kickoff, or past kickoff but not
+ * yet reported finished. Lets the SWR layer skip upstream fetches the rest of
  * the time, since results can't have changed.
+ *
+ * The window has no post-kickoff cutoff on purpose: openfootball flips a match
+ * scheduled → finished only when a maintainer commits the result, which can
+ * land hours after full time. A cutoff would freeze the pre-result snapshot
+ * until the *next* round's kickoff. The cache TTL still rate-limits upstream
+ * fetches, and once every started fixture is finished the window closes.
  */
 export function isInLiveWindow(
   fixtures: readonly Fixture[],
@@ -25,12 +30,7 @@ export function isInLiveWindow(
     if (fx.status === "scheduled") {
       const kickoffMs = Date.parse(fx.kickoff);
       if (Number.isNaN(kickoffMs)) continue;
-      if (
-        nowMs >= kickoffMs - PRE_KICKOFF_WINDOW_MS &&
-        nowMs <= kickoffMs + POST_KICKOFF_WINDOW_MS
-      ) {
-        return true;
-      }
+      if (nowMs >= kickoffMs - PRE_KICKOFF_WINDOW_MS) return true;
     }
   }
   return false;

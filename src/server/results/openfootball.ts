@@ -94,8 +94,10 @@ function normalizeMatch(
   const externalId = `${num}-${m.date}`;
   const kickoff = parseLocalKickoff(m.date, m.time);
 
-  const homeScore = m.score?.ft?.[0] ?? m.score?.et?.[0] ?? null;
-  const awayScore = m.score?.ft?.[1] ?? m.score?.et?.[1] ?? null;
+  // `et` is the cumulative 120-minute score — when present it, not `ft`
+  // (the 90-minute score), is the final result.
+  const homeScore = m.score?.et?.[0] ?? m.score?.ft?.[0] ?? null;
+  const awayScore = m.score?.et?.[1] ?? m.score?.ft?.[1] ?? null;
   const finished = m.score?.ft !== undefined || m.score?.et !== undefined;
 
   return {
@@ -169,10 +171,12 @@ function makeTeam(
   rawName: string,
   index: ReadonlyMap<string, TeamCode>,
 ): FixtureTeam {
-  // Placeholders look like "W101", "RU1A", "1A", etc. — short codes that
-  // describe bracket positions rather than real teams.
-  const placeholder = /^[A-Z0-9]{2,5}$/.test(rawName) && rawName !== rawName.toLowerCase();
-  const code = placeholder ? null : lookupTeamCode(index, rawName);
+  // Always try the lookup: real teams resolve (names, codes, and aliases are
+  // all indexed), so bracket placeholders like "W101", "RU1A", "1A" fall
+  // through to null on their own. Never pattern-match the raw name instead —
+  // short all-caps country names ("USA") are indistinguishable from
+  // placeholders by shape.
+  const code = lookupTeamCode(index, rawName);
   return {
     code,
     name: rawName,
