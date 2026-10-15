@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { Hono } from "hono";
+import { type Context, Hono } from "hono";
 import { TournamentTeamsFileSchema } from "../core/schemas.js";
 import { computeLeaderboard } from "../core/scoring.js";
 import { type Team } from "../core/types.js";
@@ -40,7 +40,7 @@ export function createApp(env: NodeJS.ProcessEnv = process.env): Hono {
   );
 
   app.get("/api/results", async (c) => {
-    const r = await getResults({ cache, config, teams });
+    const r = await getResults({ cache, config, teams, force: wantsForce(c) });
     return c.json({
       lastUpdated: r.lastUpdated,
       degraded: r.degraded,
@@ -50,7 +50,7 @@ export function createApp(env: NodeJS.ProcessEnv = process.env): Hono {
   });
 
   app.get("/api/results/fixtures", async (c) => {
-    const r = await getResults({ cache, config, teams });
+    const r = await getResults({ cache, config, teams, force: wantsForce(c) });
     const secrets = loadSecrets(env);
     return c.json({
       lastUpdated: r.lastUpdated,
@@ -62,7 +62,7 @@ export function createApp(env: NodeJS.ProcessEnv = process.env): Hono {
   });
 
   app.get("/api/results/standings", async (c) => {
-    const r = await getResults({ cache, config, teams });
+    const r = await getResults({ cache, config, teams, force: wantsForce(c) });
     const secrets = loadSecrets(env);
     return c.json({
       lastUpdated: r.lastUpdated,
@@ -74,7 +74,7 @@ export function createApp(env: NodeJS.ProcessEnv = process.env): Hono {
   });
 
   app.get("/api/results/live", async (c) => {
-    const r = await getResults({ cache, config, teams });
+    const r = await getResults({ cache, config, teams, force: wantsForce(c) });
     const secrets = loadSecrets(env);
     const matches = enrichLiveMatches(r.bundle.fixtures, secrets.draws);
     return c.json({
@@ -87,7 +87,7 @@ export function createApp(env: NodeJS.ProcessEnv = process.env): Hono {
   });
 
   app.get("/api/results/leaderboard", async (c) => {
-    const r = await getResults({ cache, config, teams });
+    const r = await getResults({ cache, config, teams, force: wantsForce(c) });
     const secrets = loadSecrets(env);
     const leaderboard = computeLeaderboard({
       fixtures: r.bundle.fixtures,
@@ -104,7 +104,7 @@ export function createApp(env: NodeJS.ProcessEnv = process.env): Hono {
   });
 
   app.get("/api/results/live-by-participant", async (c) => {
-    const r = await getResults({ cache, config, teams });
+    const r = await getResults({ cache, config, teams, force: wantsForce(c) });
     const secrets = loadSecrets(env);
     const grouped = groupLiveFixturesByParticipant(
       r.bundle.fixtures,
@@ -120,6 +120,11 @@ export function createApp(env: NodeJS.ProcessEnv = process.env): Hono {
   });
 
   return app;
+}
+
+/** Whether the `?forceUpdate` query param is present — bypasses cache gates. */
+function wantsForce(c: Context): boolean {
+  return !!c.req.query("forceUpdate");
 }
 
 function loadTournamentTeams(): Team[] {
