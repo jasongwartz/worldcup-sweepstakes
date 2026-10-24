@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "predev": "tsx scripts/seed-teams.ts",
     "dev": "concurrently -k -n vite,api -c blue,green \"npm:dev:client\" \"npm:dev:server\"",
